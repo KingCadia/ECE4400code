@@ -33,7 +33,7 @@ class computeNode:
 class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
-        portNum = 2525
+        portNum = 8000
         self.computeNodes = []
         for i in range(8):
             node = computeNode(size=size, portNum=portNum)
