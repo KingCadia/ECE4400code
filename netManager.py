@@ -138,6 +138,6 @@ def main():
     
     controller = CannonController(matAList=matASubs, matBList=matBSubs, size=size)
     
-    
+main()
     
     

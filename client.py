@@ -13,3 +13,4 @@ def main():
     size = pickle.loads(size)
 
     print(size)
+main()
