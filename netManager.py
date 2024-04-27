@@ -94,47 +94,37 @@ def read_matrix_from_binary(file_path):
             for i in range(size[0]):
                 for j in range(size[1]):
                     # Read a float value (4 bytes) from the file
-                    float_bytes = file.read(4)
+                    int_bytes = file.read(4)
                     # Convert the bytes to a float using the 'f' format of struct.unpack
-                    matrix[i][j] = struct.unpack('f', float_bytes)[0]
+                    matrix[i][j] = struct.unpack('i', int_bytes)[0]
     except FileNotFoundError:
         print("File not found.")
         return None
     except Exception as e:
         print("An error occurred:", e)
         return None
-
-    return matrix, size[0]
+    print(matrix)
+    return matrix, size[1]
 
 # function to split the matrix into equal parts
-def split_matrix(matrix):
+def split_matrix(matrix, size):
     submatrices = []
+    sub_size = size // 3
 
-    # Calculate the dimensions of each submatrix
-    submatrix_rows = len(matrix) // 3
-    submatrix_cols = len(matrix[0]) // 3
-
-    # Iterate through the original matrix and extract submatrices
-    for i in range(3):
-        for j in range(3):
-            # Initialize an empty submatrix
-            submatrix = [[0.0 for _ in range(submatrix_cols)] for _ in range(submatrix_rows)]
-            # Copy values from the original matrix to the submatrix
-            for m in range(submatrix_rows):
-                for n in range(submatrix_cols):
-                    submatrix[m][n] = matrix[i * submatrix_rows + m][j * submatrix_cols + n]
-            # Append the submatrix to the list
+    for i in range(0, size, sub_size):
+        for j in range(0, size, sub_size):
+            submatrix = [matrix[x][j:j+sub_size] for x in range(i, i+sub_size)]
             submatrices.append(submatrix)
 
     return submatrices
 
 def main():
     # gets the 2 matrices from the files into memory 
-    matA, size = read_matrix_from_binary("matA.bin")
-    matB, size = read_matrix_from_binary("matB.bin")
+    (matA, size) = read_matrix_from_binary("matA.bin")
+    (matB, size) = read_matrix_from_binary("matB.bin")
     
-    matASubs = split_matrix(matA)
-    matBSubs = split_matrix(matB)
+    matASubs = split_matrix(matA, size)
+    matBSubs = split_matrix(matB, size)
     
     controller = CannonController(matAList=matASubs, matBList=matBSubs, size=size)
     
