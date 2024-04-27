@@ -38,7 +38,7 @@ class CannonController:
         # makes all the computemode connections
         self.computeNodes = []
         for i in range(8):
-            node = computeNode()
+            node = computeNode(size=size)
             self.computeNodes.append(node)
             self.matAlist = matAList
             self.matBlist = matBList
