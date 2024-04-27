@@ -6,15 +6,12 @@ import threading
 import time
 import struct
 
-portNum = 2525
-
 class computeNode:
-    def __init__(self, size):
+    def __init__(self, size, portNum):
         hostName = socket.gethostname()
         # creates socket object
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((hostName, portNum))
-        portNum = portNum + 1
         self.socket.listen(9)
         
         # gets a connection from one of the compute nodes
@@ -36,9 +33,11 @@ class computeNode:
 class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
+        portNum = 2525
         self.computeNodes = []
         for i in range(8):
-            node = computeNode(size=size)
+            node = computeNode(size=size, portNum=portNum)
+            portNum += 1
             self.computeNodes.append(node)
             self.matAlist = matAList
             self.matBlist = matBList
