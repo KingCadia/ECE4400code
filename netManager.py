@@ -103,7 +103,7 @@ def read_matrix_from_binary(file_path):
     except Exception as e:
         print("An error occurred:", e)
         return None
-    print(matrix)
+
     return matrix, size[1]
 
 # function to split the matrix into equal parts
