@@ -11,7 +11,7 @@ class computeNode:
         self.size = size / 3
         self.conn , self.addr = serverSocket.accept()
         # sends the size of the submatrix
-        data = struct.pack('!i', self.size)
+        data = pickle.dumps(self.size)
         self.conn.send(data)
         data = pickle.dumps(mat)
         self.size = sys.getsizeof(data)
@@ -29,7 +29,7 @@ class CannonController:
         # makes all the computemode connections
         HOST = '192.168.10.11'
         PORT = 12345
-        
+
         self.computeNodes = []
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serverSocket.bind((HOST, PORT))
