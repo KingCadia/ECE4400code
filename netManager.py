@@ -11,7 +11,7 @@ class computeNode:
         self.size = size / 3
         self.conn , self.addr = serverSocket.accept()
         # sends the size of the submatrix
-        data = pickle.dumps(size)
+        data = struct.pack('!i', self.size)
         self.conn.send(data)
         data = pickle.dumps(mat)
         self.size = sys.getsizeof(data)

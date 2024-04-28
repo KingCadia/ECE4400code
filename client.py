@@ -1,6 +1,7 @@
 import sys
 import socket
 import pickle
+import struct
 
 def main():
     # sets up socket
@@ -11,7 +12,6 @@ def main():
     # connects to the server
     nodeSocket.connect((HOST, PORT))
     size = nodeSocket.recv(4)
-    size = pickle.loads(size)
-
-    print(size)
+    received_int = struct.unpack('!i', size)[0]
+    print(received_int)
 main()
