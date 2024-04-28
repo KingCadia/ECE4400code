@@ -36,7 +36,7 @@ class CannonController:
         serverSocket.listen(9)
 
         for i in range(1):
-            node = computeNode(size=size, serverSocket=serverSocket)
+            node = computeNode(size=size, serverSocket=serverSocket, mat=matAList[0])
             self.computeNodes.append(node)
         self.matAlist = matAList
         self.matBlist = matBList
