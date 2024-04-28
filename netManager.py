@@ -7,13 +7,21 @@ import time
 import struct
 
 class computeNode:
-    def __init__(self, size, serverSocket):
-        self.size = size
+    def __init__(self, size, serverSocket, mat):
+        self.size = size / 3
         self.conn , self.addr = serverSocket.accept()
         # sends the size of the submatrix
-        self.conn.send(pickle.dumps(size / 3))
+        data = pickle.dumps(size)
+        self.conn.send(data)
+        data = pickle.dumps(mat)
+        self.size = sys.getsizeof(data)
+
+    def sendMat(self, mat):
+        self.conn.send(pickle.dumps(mat))
     
-    
+    def recvMat(self):
+        data = self.conn.recv(self.size)
+        return data
 
 
 class CannonController:
@@ -35,7 +43,6 @@ class CannonController:
         self.matSize = size
         # aligns the matrices
         self.matrixalign()
-
 
     def matrixalign(self):
         # does the inital alignment of the 2 matrices
@@ -68,30 +75,29 @@ class CannonController:
         self.matBlist = alignedBList
 
     def matShift(self):
-        # shifts the arrays
-        # shifts a to the left 1 and b up 1
+        # shifts A left 1 and B up 1
         alignedAList = []
-        alignedAList[0] = self.matAlist[0]
-        alignedAList[1] = self.matAlist[1]
-        alignedAList[2] = self.matAlist[2]
+        alignedAList[0] = self.matAlist[1]
+        alignedAList[1] = self.matAlist[2]
+        alignedAList[2] = self.matAlist[0]
         alignedAList[3] = self.matAlist[4]
         alignedAList[4] = self.matAlist[5]
         alignedAList[5] = self.matAlist[3]
-        alignedAList[6] = self.matAlist[8]
-        alignedAList[7] = self.matAlist[6]
-        alignedAList[8] = self.matAlist[7]
+        alignedAList[6] = self.matAlist[7]
+        alignedAList[7] = self.matAlist[8]
+        alignedAList[8] = self.matAlist[6]
 
         # aligns the B matrix
         alignedBList = []
-        alignedBList[0] = self.matBlist[0]
+        alignedBList[0] = self.matBlist[3]
         alignedBList[1] = self.matBlist[4]
-        alignedBList[2] = self.matBlist[8]
-        alignedBList[3] = self.matBlist[3]
+        alignedBList[2] = self.matBlist[5]
+        alignedBList[3] = self.matBlist[6]
         alignedBList[4] = self.matBlist[7]
-        alignedBList[5] = self.matBlist[2]
-        alignedBList[6] = self.matBlist[6]
+        alignedBList[5] = self.matBlist[8]
+        alignedBList[6] = self.matBlist[0]
         alignedBList[7] = self.matBlist[1]
-        alignedBList[8] = self.matBlist[5]
+        alignedBList[8] = self.matBlist[2]
 
         self.matAlist = alignedAList
         self.matBlist = alignedBList
