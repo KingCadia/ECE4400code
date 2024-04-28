@@ -76,6 +76,35 @@ class CannonController:
         self.matAlist = alignedAList
         self.matBlist = alignedBList
 
+    def matShift(self):
+        # shifts the arrays
+        # shifts a to the left 1 and b up 1
+        alignedAList = []
+        alignedAList[0] = self.matAlist[0]
+        alignedAList[1] = self.matAlist[1]
+        alignedAList[2] = self.matAlist[2]
+        alignedAList[3] = self.matAlist[4]
+        alignedAList[4] = self.matAlist[5]
+        alignedAList[5] = self.matAlist[3]
+        alignedAList[6] = self.matAlist[8]
+        alignedAList[7] = self.matAlist[6]
+        alignedAList[8] = self.matAlist[7]
+
+        # aligns the B matrix
+        alignedBList = []
+        alignedBList[0] = self.matBlist[0]
+        alignedBList[1] = self.matBlist[4]
+        alignedBList[2] = self.matBlist[8]
+        alignedBList[3] = self.matBlist[3]
+        alignedBList[4] = self.matBlist[7]
+        alignedBList[5] = self.matBlist[2]
+        alignedBList[6] = self.matBlist[6]
+        alignedBList[7] = self.matBlist[1]
+        alignedBList[8] = self.matBlist[5]
+
+        self.matAlist = alignedAList
+        self.matBlist = alignedBList
+
 # function to read a matrix into memory
 def read_matrix_from_binary(file_path):
     try:
