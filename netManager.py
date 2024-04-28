@@ -35,7 +35,7 @@ class CannonController:
         # makes all the computemode connections
         portNum = 8000
         self.computeNodes = []
-        for i in range(8):
+        for i in range(1):
             node = computeNode(size=size, portNum=portNum)
             portNum += 1
             self.computeNodes.append(node)
