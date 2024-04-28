@@ -7,41 +7,32 @@ import time
 import struct
 
 class computeNode:
-    def __init__(self, size, portNum):
-        hostName = socket.gethostname()
-        # creates socket object
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.bind((hostName, portNum))
-        self.socket.listen(9)
-        
-        # gets a connection from one of the compute nodes
-        self.conn, self.addr = self.socket.accept()
-        
-        # sends the size of the matrix
-        dataString = pickle.dumps(size)
-        self.conn.sendall(dataString)
+    def __init__(self, size, serverSocket):
         self.size = size
+        self.conn , self.addr = serverSocket.accept()
+        # sends the size of the submatrix
+        self.conn.send(pickle.dumps(size / 3))
+    
+    
 
-    def sendMat(self, subMat):
-        data = pickle.dumps(subMat)
-        self.conn.send(data)
-
-    def recvMat(self):
-        mat = self.conn.recv(self.size * self.size * 32)
-        return mat
 
 class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
-        portNum = 8000
+        HOST = '192.168.10.11'
+        PORT = 12345
+        
         self.computeNodes = []
+        serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serverSocket.bind((HOST, PORT))
+        serverSocket.listen(9)
+
         for i in range(1):
-            node = computeNode(size=size, portNum=portNum)
-            portNum += 1
+            node = computeNode(size=size, serverSocket=serverSocket)
             self.computeNodes.append(node)
-            self.matAlist = matAList
-            self.matBlist = matBList
-            self.matSize = size
+        self.matAlist = matAList
+        self.matBlist = matBList
+        self.matSize = size
         # aligns the matrices
         self.matrixalign()
 
