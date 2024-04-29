@@ -24,7 +24,7 @@ def main():
     # intalizes the result matrix
     result = [[0] * size] * size
 
-    for i in range(3):
+    for i in range(1):
         # recevies the a and b matrices
         matA = nodeSocket.recv(sys.getsizeof(result))
         matB = nodeSocket.recv(sys.getsizeof(result))

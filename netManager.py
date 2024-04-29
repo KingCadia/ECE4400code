@@ -108,10 +108,13 @@ class CannonController:
         self.matBlist = alignedBList
 
     def sendMats(self):
-        for i in range(9):
+        for i in range(1):
             # sends matrix A and B to each node
             self.computeNodes[i].sendMat(self.matAlist[i])
             self.computeNodes[i].sendMat(self.matBlist[i])
+
+    def recvResultMat(self, index):
+        data = self.computeNodes[index].recvMat()
 
 # function to read a matrix into memory
 def read_matrix_from_binary(file_path):
@@ -165,10 +168,14 @@ def main():
     controller = CannonController(matAList=matASubs, matBList=matBSubs, size=size)
 
     # does the shifting and sending of the matrices 
-    for i in range(3):
+    for i in range(1):
         controller.sendMats()
         controller.matShift()
 
+    # recives the result mats
+    results = []
+    for i in range(1):
+        submat = controller.recvResultMat(i)
     
 main()
     
