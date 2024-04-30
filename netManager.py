@@ -216,7 +216,7 @@ def main():
     
     controller.socket.close()
 
-    print("time to fininsh = " + runtime + "\n")
+    print("time to fininsh = ", runtime, "\n")
     write_matrix_to_binary_file(matrix=wholeMat, filename="parallelResult.bin")
 
 main()

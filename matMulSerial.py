@@ -47,6 +47,6 @@ start = time.time()
 result = multiply_matrices(matA, matB)
 end = time.time()
 runtime = end - start
-print("time to fininsh = " + runtime + "\n")
+print("time to fininsh = ", runtime, "\n")
 # Write the result to serialResult.bin
 write_matrix_to_binary_file(result, "serialResult.bin")
