@@ -50,7 +50,7 @@ class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
         HOST = '192.168.10.11'
-        PORT = 12376
+        PORT = 8001
         self.matAlist = matAList
         self.matBlist = matBList
         
@@ -58,6 +58,8 @@ class CannonController:
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serverSocket.bind((HOST, PORT))
         serverSocket.listen(4)
+
+        self.socket = serverSocket
 
         # makes all the node connections
         for i in range(4):
@@ -211,7 +213,10 @@ def main():
     wholeMat = combine_submatrices(results)
     end = time.time()
     runtime = end - start
-    print("time to fininsh = {runtime}\n")
+    
+    controller.socket.close()
+
+    print("time to fininsh = " + runtime + "\n")
     write_matrix_to_binary_file(matrix=wholeMat, filename="parallelResult.bin")
 
 main()

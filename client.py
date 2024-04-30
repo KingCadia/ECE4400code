@@ -1,4 +1,3 @@
-import sys
 import socket
 import pickle
 
@@ -35,14 +34,14 @@ def receive_matrix(sock):
 
 def addMatrix(matA, matB, result):
     for i in range(len(matA)):
-        for j in range(len(matA[0])):
+        for j in range(len(matA[0])):  # Assuming both matrices have the same dimensions
             result[i][j] += matA[i][j] + matB[i][j]
     return result
 
 def main():
     # sets up socket
     HOST = '192.168.10.11'  
-    PORT = 12376
+    PORT = 8001
     nodeSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # connects to the server and gets the size of the matrix
@@ -53,7 +52,9 @@ def main():
 
     size = int(size)
     # intalizes the result matrix
-    result = [[0] * size] * size
+    result = []
+    for _ in range(size):
+        result.append([0] * size)
 
     for i in range(2):
         # recevies the a and b matrices
@@ -68,5 +69,6 @@ def main():
     # waits for nodes turn to transmit
     go = nodeSocket.recv(4096)
     sendMat(mat=result, conn=nodeSocket)
+    nodeSocket.close()
     
 main()
