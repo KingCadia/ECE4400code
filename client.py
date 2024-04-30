@@ -27,10 +27,10 @@ def main():
 
     for i in range(2):
         # recevies the a and b matrices
-        matA = nodeSocket.recv(bufferSize)
-        matA = pickle.loads(matA)
-        matB = nodeSocket.recv(bufferSize)
-        matB = pickle.loads(matB)
+        matA = pickle.loads(nodeSocket.recv(bufferSize))
+        nodeSocket.send(pickle.dumps(1))
+        matB = pickle.loads(nodeSocket.recv(bufferSize))
+        nodeSocket.send(pickle.dumps(1))
         result = addMatrix(matA=matA, matB=matB, result=result)
 
     # sends the result matrix back

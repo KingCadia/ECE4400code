@@ -25,7 +25,6 @@ class computeNode:
         data = pickle.loads(data)
         return data
 
-
 class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
@@ -92,7 +91,9 @@ class CannonController:
         for i in range(4):
             # sends matrix A and B to each node
             self.computeNodes[i].sendMat(self.matAlist[i])
+            go = self.computeNodes[i].conn.recv(1024)
             self.computeNodes[i].sendMat(self.matBlist[i])
+            go = self.computeNodes[i].conn.recv(1024)
 
     def recvResultMat(self, index):
         data = self.computeNodes[index].recvMat()
