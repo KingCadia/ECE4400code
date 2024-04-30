@@ -40,7 +40,7 @@ class CannonController:
         serverSocket.listen(9)
 
         # makes all the node connections
-        for i in range(1):
+        for i in range(9):
             node = computeNode(size=size, serverSocket=serverSocket, mat=matAList[0])
             self.computeNodes.append(node)
         
