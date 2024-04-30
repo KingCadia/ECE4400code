@@ -11,22 +11,37 @@ class computeNode:
         self.conn , self.addr = serverSocket.accept()
         # sends the size of the submatrix
         data = pickle.dumps(self.size)
-        self.conn.send(data)
-        go = self.conn.recv(4096)
-        data = pickle.dumps(mat)
-        self.size = sys.getsizeof(data)
-        self.conn.send(pickle.dumps(self.size))
-        go = self.conn.recv(4096)
+        self.conn.sendall(data)
 
     def sendMat(self, mat):
-        self.conn.send(pickle.dumps(mat))
+        # Pickle the matrix
+        pickled_data = pickle.dumps(mat)
+    
+        # Send the size of the pickled data
+        size_data = len(pickled_data).to_bytes(4, byteorder='big')
+        self.conn.sendall(size_data)
+    
+        # Send the pickled data
+        self.conn.sendall(pickled_data)
     
     def recvMat(self):
-        self.conn.send(pickle.dumps(1))
-        data = self.conn.recv(self.size)
-        data = pickle.loads(data)
-        return data
-
+        # Receive the size of the pickled data
+        size_data = self.conn.recv(4)  # Assuming the size is sent as a 4-byte integer
+        if not size_data:
+            return None
+        data_size = int.from_bytes(size_data, byteorder='big')
+        
+        # Receive the pickled data in chunks
+        pickled_data = b''
+        while len(pickled_data) < data_size:
+            chunk = self.conn.recv(min(4096, data_size - len(pickled_data)))
+            if not chunk:
+                return None
+            pickled_data += chunk
+        
+        # Unpickle the received data
+        matrix = pickle.loads(pickled_data)
+        return matrix
 class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
@@ -93,9 +108,7 @@ class CannonController:
         for i in range(4):
             # sends matrix A and B to each node
             self.computeNodes[i].sendMat(self.matAlist[i])
-            go = self.computeNodes[i].conn.recv(1024)
             self.computeNodes[i].sendMat(self.matBlist[i])
-            go = self.computeNodes[i].conn.recv(1024)
 
     def recvResultMat(self, index):
         data = self.computeNodes[index].recvMat()
