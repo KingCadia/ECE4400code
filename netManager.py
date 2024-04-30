@@ -39,7 +39,7 @@ class CannonController:
         serverSocket.listen(9)
 
         # starts up all of the client nodes
-        os.system("pssh -h sshhost -i python3 client.py")
+        os.system("parallel-ssh -h sshhost -i python3 client.py")
 
         # makes all the node connections
         for i in range(9):
