@@ -25,7 +25,7 @@ def main():
     # intalizes the result matrix
     result = [[0] * size] * size
 
-    for i in range(3):
+    for i in range(2):
         # recevies the a and b matrices
         matA = nodeSocket.recv(bufferSize)
         matA = pickle.loads(matA)

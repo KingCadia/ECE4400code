@@ -37,10 +37,10 @@ class CannonController:
         self.computeNodes = []
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serverSocket.bind((HOST, PORT))
-        serverSocket.listen(9)
+        serverSocket.listen(4)
 
         # makes all the node connections
-        for i in range(9):
+        for i in range(4):
             node = computeNode(size=size, serverSocket=serverSocket, mat=matAList[0])
             self.computeNodes.append(node)
         
@@ -150,7 +150,7 @@ def read_matrix_from_binary(file_path):
 # function to split the matrix into equal parts
 def split_matrix(matrix, size):
     submatrices = []
-    sub_size = size // 3
+    sub_size = size // 2
 
     for i in range(0, size, sub_size):
         for j in range(0, size, sub_size):
@@ -161,12 +161,12 @@ def split_matrix(matrix, size):
 
 def combine_submatrices(submatrices):
     submatrix_size = len(submatrices[0])
-    matrix_size = submatrix_size * 3
+    matrix_size = submatrix_size * 2
     combined_matrix = [[0] * matrix_size for _ in range(matrix_size)]
 
     for i, submatrix in enumerate(submatrices):
-        row_start = (i // 3) * submatrix_size
-        col_start = (i % 3) * submatrix_size
+        row_start = (i // 2) * submatrix_size
+        col_start = (i % 2) * submatrix_size
 
         for row_offset, row in enumerate(submatrix):
             for col_offset, value in enumerate(row):
@@ -199,12 +199,12 @@ def main():
 
     # does the shifting and sending of the matrices
     start = time.time()
-    for i in range(3):
+    for i in range(2):
         controller.sendMats()
         controller.matShift()
     # recives the result mats
     results = []
-    for i in range(9):
+    for i in range(4):
         submat = controller.recvResultMat(i)
         results.append(submat)
     # puts the matrix back together
