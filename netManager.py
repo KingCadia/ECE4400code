@@ -31,7 +31,7 @@ class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
         HOST = '192.168.10.11'
-        PORT = 1237
+        PORT = 12376
         self.matAlist = matAList
         self.matBlist = matBList
         

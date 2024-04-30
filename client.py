@@ -11,17 +11,17 @@ def addMatrix(matA, matB, result):
 def main():
     # sets up socket
     HOST = '192.168.10.11'  
-    PORT = 1237
+    PORT = 12376
     nodeSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # connects to the server and gets the size of the matrix
     nodeSocket.connect((HOST, PORT))
-    size = nodeSocket.recv(4)
+    size = nodeSocket.recv(4096)
     
     size = pickle.loads(size)
-    nodeSocket.send(pickle.dumps(4096))
+    nodeSocket.send(pickle.dumps(1))
     bufferSize = int(pickle.loads(nodeSocket.recv(4)))
-    nodeSocket.send(pickle.dumps(4096))
+    nodeSocket.send(pickle.dumps(1))
 
     size = int(size)
     # intalizes the result matrix
