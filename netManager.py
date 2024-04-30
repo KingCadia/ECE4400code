@@ -14,6 +14,7 @@ class computeNode:
         self.conn.send(data)
         data = pickle.dumps(mat)
         self.size = sys.getsizeof(data)
+        self.conn.send(pickle.dumps(self.size))
 
     def sendMat(self, mat):
         self.conn.send(pickle.dumps(mat))
@@ -39,7 +40,7 @@ class CannonController:
         serverSocket.listen(9)
 
         # makes all the node connections
-        for i in range(9):
+        for i in range(1):
             node = computeNode(size=size, serverSocket=serverSocket, mat=matAList[0])
             self.computeNodes.append(node)
         

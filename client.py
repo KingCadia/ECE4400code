@@ -19,15 +19,17 @@ def main():
     size = nodeSocket.recv(4096)
     size = pickle.loads(size)
 
+    bufferSize = int(pickle.loads(nodeSocket.recv(4096)))
+
     size = int(size)
     # intalizes the result matrix
     result = [[0] * size] * size
 
     for i in range(3):
         # recevies the a and b matrices
-        matA = nodeSocket.recv(sys.getsizeof(result))
+        matA = nodeSocket.recv(bufferSize)
         matA = pickle.loads(matA)
-        matB = nodeSocket.recv(sys.getsizeof(result))
+        matB = nodeSocket.recv(bufferSize)
         matB = pickle.loads(matB)
         result = addMatrix(matA=matA, matB=matB, result=result)
 
