@@ -1,7 +1,6 @@
 import sys
 import socket
 import pickle
-import struct
 
 def addMatrix(matA, matB, result):
     for i in range(len(matA)):
@@ -24,12 +23,18 @@ def main():
     # intalizes the result matrix
     result = [[0] * size] * size
 
-    for i in range(1):
+    for i in range(3):
         # recevies the a and b matrices
         matA = nodeSocket.recv(sys.getsizeof(result))
         matA = pickle.loads(matA)
         matB = nodeSocket.recv(sys.getsizeof(result))
         matB = pickle.loads(matB)
+        result = addMatrix(matA=matA, matB=matB, result=result)
 
-    print(matA)
+    # sends the result matrix back
+
+    # waits for nodes turn to transmit
+    go = nodeSocket.recv(4096)
+    nodeSocket.send(pickle.dumps(result))
+    
 main()

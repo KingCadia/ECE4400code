@@ -1,8 +1,6 @@
 import sys
 import socket
 import pickle
-import subprocess
-import threading
 import time
 import struct
 
@@ -20,6 +18,7 @@ class computeNode:
         self.conn.send(pickle.dumps(mat))
     
     def recvMat(self):
+        self.conn.send("go")
         data = self.conn.recv(self.size)
         data = pickle.loads(data)
         return data
@@ -39,7 +38,7 @@ class CannonController:
         serverSocket.listen(9)
 
         # makes all the node connections
-        for i in range(1):
+        for i in range(9):
             node = computeNode(size=size, serverSocket=serverSocket, mat=matAList[0])
             self.computeNodes.append(node)
         
@@ -108,13 +107,14 @@ class CannonController:
         self.matBlist = alignedBList
 
     def sendMats(self):
-        for i in range(1):
+        for i in range(9):
             # sends matrix A and B to each node
             self.computeNodes[i].sendMat(self.matAlist[i])
             self.computeNodes[i].sendMat(self.matBlist[i])
 
     def recvResultMat(self, index):
         data = self.computeNodes[index].recvMat()
+        return data
 
 # function to read a matrix into memory
 def read_matrix_from_binary(file_path):
@@ -157,6 +157,34 @@ def split_matrix(matrix, size):
 
     return submatrices
 
+def combine_submatrices(submatrices):
+    submatrix_size = len(submatrices[0])
+    matrix_size = submatrix_size * 3
+    combined_matrix = [[0] * matrix_size for _ in range(matrix_size)]
+
+    for i, submatrix in enumerate(submatrices):
+        row_start = (i // 3) * submatrix_size
+        col_start = (i % 3) * submatrix_size
+
+        for row_offset, row in enumerate(submatrix):
+            for col_offset, value in enumerate(row):
+                combined_matrix[row_start + row_offset][col_start + col_offset] = value
+
+    return combined_matrix
+
+def write_matrix_to_binary_file(matrix, filename):
+    with open(filename, 'wb') as file:
+        # Write the number of rows and columns as the first line
+        rows = len(matrix)
+        cols = len(matrix[0])
+        file.write(struct.pack('ii', rows, cols))
+
+        # Write each element of the matrix to the file
+        for row in matrix:
+            for element in row:
+                file.write(struct.pack('i', element))
+
+
 def main():
     # gets the 2 matrices from the files into memory 
     (matA, size) = read_matrix_from_binary("matA.bin")
@@ -167,16 +195,23 @@ def main():
     
     controller = CannonController(matAList=matASubs, matBList=matBSubs, size=size)
 
-    # does the shifting and sending of the matrices 
-    for i in range(1):
+    # does the shifting and sending of the matrices
+    start = time.time()
+    for i in range(3):
         controller.sendMats()
         controller.matShift()
-
     # recives the result mats
     results = []
-    for i in range(1):
+    for i in range(9):
         submat = controller.recvResultMat(i)
-    
+        results.append(submat)
+    # puts the matrix back together
+    wholeMat = combine_submatrices(results)
+    end = time.time()
+    runtime = end - start
+    print("time to fininsh = {runtime}\n")
+    write_matrix_to_binary_file(matrix=wholeMat, filename="parallelResult.bin")
+
 main()
     
     
