@@ -67,6 +67,6 @@ def main():
 
     # waits for nodes turn to transmit
     go = nodeSocket.recv(4096)
-    sendMat(result)
+    sendMat(mat=result, conn=nodeSocket)
     
 main()
