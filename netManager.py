@@ -12,9 +12,11 @@ class computeNode:
         # sends the size of the submatrix
         data = pickle.dumps(self.size)
         self.conn.send(data)
+        go = self.conn.recv(1024)
         data = pickle.dumps(mat)
         self.size = sys.getsizeof(data)
         self.conn.send(pickle.dumps(self.size))
+        go = self.conn.recv(1024)
 
     def sendMat(self, mat):
         self.conn.send(pickle.dumps(mat))
@@ -29,7 +31,7 @@ class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
         HOST = '192.168.10.11'
-        PORT = 12345
+        PORT = 1234
         self.matAlist = matAList
         self.matBlist = matBList
         
