@@ -38,9 +38,6 @@ class CannonController:
         serverSocket.bind((HOST, PORT))
         serverSocket.listen(9)
 
-        # starts up all of the client nodes
-        os.system("parallel-ssh -h sshhost -i python3 client.py")
-
         # makes all the node connections
         for i in range(9):
             node = computeNode(size=size, serverSocket=serverSocket, mat=matAList[0])
@@ -190,7 +187,6 @@ def write_matrix_to_binary_file(matrix, filename):
 
 
 def main():
-    os.system("pssh -h sshhost -i cd ECE4400code")
     # gets the 2 matrices from the files into memory 
     (matA, size) = read_matrix_from_binary("matA.bin")
     (matB, size) = read_matrix_from_binary("matB.bin")
