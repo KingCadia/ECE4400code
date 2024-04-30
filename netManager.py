@@ -3,6 +3,7 @@ import socket
 import pickle
 import time
 import struct
+import os
 
 class computeNode:
     def __init__(self, size, serverSocket, mat):
@@ -36,6 +37,9 @@ class CannonController:
         serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         serverSocket.bind((HOST, PORT))
         serverSocket.listen(9)
+
+        # starts up all of the client nodes
+        os.system("pssh -h sshhost -i python3 client.py")
 
         # makes all the node connections
         for i in range(9):
@@ -186,6 +190,7 @@ def write_matrix_to_binary_file(matrix, filename):
 
 
 def main():
+    os.system("pssh -h sshhost -i cd ECE4400code")
     # gets the 2 matrices from the files into memory 
     (matA, size) = read_matrix_from_binary("matA.bin")
     (matB, size) = read_matrix_from_binary("matB.bin")
