@@ -2,7 +2,7 @@ import sys
 import socket
 import pickle
 
-def sendMat(self, mat, conn):
+def sendMat(mat, conn):
         # Pickle the matrix
         pickled_data = pickle.dumps(mat)
     
