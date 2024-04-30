@@ -25,6 +25,10 @@ class computeNode:
         self.conn.sendall(pickled_data)
     
     def recvMat(self):
+        # sends the go command
+        go = len(self.size).to_bytes(4, byteorder='big')
+        self.conn.sendall(go)
+
         # Receive the size of the pickled data
         size_data = self.conn.recv(4)  # Assuming the size is sent as a 4-byte integer
         if not size_data:
