@@ -1,9 +1,9 @@
-ubuntu@2610:1e0:1700:206:f816:3eff:fe18:14e3
-ubuntu@2610:1e0:1700:206:f816:3eff:fe8a:382a
-ubuntu@2610:1e0:1700:206:f816:3eff:fe33:ba19
-ubuntu@2610:1e0:1700:206:f816:3eff:fe09:49bf
-ubuntu@2610:1e0:1700:206:f816:3eff:fe4a:d929	
-ubuntu@2610:1e0:1700:206:f816:3eff:fec8:c140	
-ubuntu@2610:1e0:1700:206:f816:3eff:fef2:1809
-ubuntu@2610:1e0:1700:206:f816:3eff:fe7d:dd67
-ubuntu@2610:1e0:1700:206:f816:3eff:fed6:f391
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fe18:14e3
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fe8a:382a
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fe33:ba19
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fe09:49bf
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fe4a:d929	
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fec8:c140
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fef2:1809
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fe7d:dd67
+-i /home/fabric/work/fabric_config/slice_key -F /home/fabric/work/fabric_config/ssh_config ubuntu@2610:1e0:1700:206:f816:3eff:fed6:f391
