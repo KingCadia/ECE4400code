@@ -7,7 +7,7 @@ import os
 
 class computeNode:
     def __init__(self, size, serverSocket, mat):
-        self.size = size / 3
+        self.size = size / 2
         self.conn , self.addr = serverSocket.accept()
         # sends the size of the submatrix
         data = pickle.dumps(self.size)
@@ -56,26 +56,16 @@ class CannonController:
         # aligns the A matrix
         alignedAList = []
         alignedAList.append(self.matAlist[0])
-        alignedAList.append(self.matAlist[1]) 
+        alignedAList.append(self.matAlist[3]) 
         alignedAList.append(self.matAlist[2]) 
-        alignedAList.append(self.matAlist[4])
-        alignedAList.append(self.matAlist[5])
-        alignedAList.append(self.matAlist[3])
-        alignedAList.append(self.matAlist[8])
-        alignedAList.append(self.matAlist[6]) 
-        alignedAList.append(self.matAlist[7])
-
+        alignedAList.append(self.matAlist[1])
+        
         # aligns the B matrix
         alignedBList = []
         alignedBList.append(self.matBlist[0])
-        alignedBList.append(self.matBlist[4]) 
-        alignedBList.append(self.matBlist[8]) 
-        alignedBList.append(self.matBlist[3])
-        alignedBList.append(self.matBlist[7])
-        alignedBList.append(self.matBlist[2])
-        alignedBList.append(self.matBlist[6])
         alignedBList.append(self.matBlist[1]) 
-        alignedBList.append(self.matBlist[5])
+        alignedBList.append(self.matBlist[3]) 
+        alignedBList.append(self.matBlist[2])
 
         self.matAlist = alignedAList
         self.matBlist = alignedBList
@@ -83,33 +73,23 @@ class CannonController:
     def matShift(self):
         # shifts A left 1 and B up 1
         alignedAList = []
-        alignedAList.append(self.matAlist[1])
-        alignedAList.append(self.matAlist[2]) 
+        alignedAList.append(self.matAlist[2])
+        alignedAList.append(self.matAlist[3]) 
         alignedAList.append(self.matAlist[0]) 
-        alignedAList.append(self.matAlist[4])
-        alignedAList.append(self.matAlist[5])
-        alignedAList.append(self.matAlist[3])
-        alignedAList.append(self.matAlist[7])
-        alignedAList.append(self.matAlist[8]) 
-        alignedAList.append(self.matAlist[6])
-
+        alignedAList.append(self.matAlist[1])
+        
         # aligns the B matrix
         alignedBList = []
-        alignedBList.append(self.matBlist[3])
-        alignedBList.append(self.matBlist[4]) 
-        alignedBList.append(self.matBlist[5]) 
-        alignedBList.append(self.matBlist[6])
-        alignedBList.append(self.matBlist[7])
-        alignedBList.append(self.matBlist[8])
-        alignedBList.append(self.matBlist[0])
-        alignedBList.append(self.matBlist[1]) 
+        alignedBList.append(self.matBlist[1])
+        alignedBList.append(self.matBlist[0]) 
+        alignedBList.append(self.matBlist[3]) 
         alignedBList.append(self.matBlist[2])
 
         self.matAlist = alignedAList
         self.matBlist = alignedBList
 
     def sendMats(self):
-        for i in range(9):
+        for i in range(4):
             # sends matrix A and B to each node
             self.computeNodes[i].sendMat(self.matAlist[i])
             self.computeNodes[i].sendMat(self.matBlist[i])
