@@ -19,7 +19,7 @@ class computeNode:
         self.conn.send(pickle.dumps(mat))
     
     def recvMat(self):
-        self.conn.send("go")
+        self.conn.send(pickle.dumps(1))
         data = self.conn.recv(self.size)
         data = pickle.loads(data)
         return data
