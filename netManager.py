@@ -3,7 +3,8 @@ import socket
 import pickle
 import time
 import struct
-import os
+import subprocess
+import threading
 
 class computeNode:
     def __init__(self, size, serverSocket, mat):
@@ -50,7 +51,7 @@ class CannonController:
     def __init__(self, matAList, matBList, size):
         # makes all the computemode connections
         HOST = '192.168.10.11'
-        PORT = 8001
+        PORT = 8002
         self.matAlist = matAList
         self.matBlist = matBList
         
@@ -188,6 +189,12 @@ def write_matrix_to_binary_file(matrix, filename):
             for element in row:
                 file.write(struct.pack('i', element))
 
+def iperfThread():
+    iperf_command = ['iperf', '-c', '192.168.10.11', '-p', '8002']
+    iperf_process = subprocess.Popen(iperf_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    for line in iperf_process.stdout:
+        print(line.strip())
+
 
 def main():
     # gets the 2 matrices from the files into memory 
@@ -197,8 +204,11 @@ def main():
     matASubs = split_matrix(matA, size)
     matBSubs = split_matrix(matB, size)
     
+
     controller = CannonController(matAList=matASubs, matBList=matBSubs, size=size)
 
+    iperf_thread = threading.Thread(target=iperfThread)
+    iperf_thread.start()
     # does the shifting and sending of the matrices
     start = time.time()
     for i in range(2):
@@ -215,10 +225,11 @@ def main():
     runtime = end - start
     
     controller.socket.close()
-
+    iperf_thread.join()
     print("time to fininsh = ", runtime, "\n")
     write_matrix_to_binary_file(matrix=wholeMat, filename="parallelResult.bin")
 
 main()
+    
     
     
